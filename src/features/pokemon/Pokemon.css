@@ -1,0 +1,9 @@
+@import "~antd/dist/antd.css";
+
+menu {
+  width: 10%;
+
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
