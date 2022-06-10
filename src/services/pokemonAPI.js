@@ -1,11 +1,25 @@
 import https from "./https";
 
-export function fetchPokemon(amount = 1) {
+export function fetchPokemon(next = null) {
+  let url = "https://pokeapi.co/api/v2/item";
+  if (next) {
+    url = next;
+  }
   let pokemon = https
-    .get("https://pokeapi.co/api/v2/item")
+    .get(url)
     .then((response) => response.data)
     .catch((error) => {
       console.log(error);
     });
   return pokemon || [];
+}
+
+export function fetchPokemonInfo(url) {
+  let info = https
+    .get(url)
+    .then((response) => response.data)
+    .catch((error) => {
+      console.log(error);
+    });
+  return info || [];
 }

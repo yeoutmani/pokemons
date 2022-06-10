@@ -9,26 +9,21 @@ import InfiniteScroll from "react-infinite-scroll-component";
 class Pokemon extends React.Component {
   constructor(props) {
     super(props);
-    this.fetchMoreData = this.fetchMoreData.bind(this);
+    this.fetchData = this.fetchData.bind(this);
 
     this.state = {
       PokemonItems: [],
-      next: "",
-      loadItems: false,
+      next: null,
     };
   }
-  async componentDidMount() {
-    const response = await fetchPokemon();
-    console.log("response", response);
-    this.setState({ PokemonItems: response.results });
-    this.setState({ next: response.next });
-
-    console.log("this.state.PokemonItems", this.state.PokemonItems);
+  componentDidMount() {
+    this.fetchData();
   }
-  async fetchMoreData() {
-    const response = await fetchPokemon();
+  async fetchData() {
+    const response = await fetchPokemon(this.state.next);
     let items = this.state.PokemonItems.concat(response.results);
     this.setState({ PokemonItems: items });
+    this.setState({ next: response.next });
   }
   render() {
     return (
@@ -37,7 +32,7 @@ class Pokemon extends React.Component {
           {this.state.PokemonItems.length !== 0 ? (
             <InfiniteScroll
               dataLength={this.state.PokemonItems.length}
-              next={this.fetchMoreData}
+              next={this.fetchData}
               hasMore={true}
               loader={<h4>Loading...</h4>}
             >
@@ -53,7 +48,7 @@ class Pokemon extends React.Component {
                       <Item
                         key={PokemonItem.name}
                         title={PokemonItem.name}
-                        imageUrl={PokemonItem.name}
+                        url={PokemonItem.url}
                         size="1"
                       />
                     </div>
