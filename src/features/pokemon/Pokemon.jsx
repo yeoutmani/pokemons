@@ -1,59 +1,63 @@
 import React from "react";
 import Item from "../item/Item";
 import { Col, Row } from "antd";
-
 import "./Pokemon.css";
 import { fetchPokemon } from "../../services/pokemonAPI";
 import InfiniteScroll from "react-infinite-scroll-component";
+import { connect } from "react-redux";
+import { setPokemonItem } from "../../redux/items/action";
+import { setNextUrl } from "../../redux/items/next-url";
 
 class Pokemon extends React.Component {
-  constructor(props) {
-    super(props);
-    this.fetchData = this.fetchData.bind(this);
-
-    this.state = {
-      PokemonItems: [],
-      next: null,
-    };
-  }
   componentDidMount() {
     this.fetchData();
   }
   async fetchData() {
-    const response = await fetchPokemon(this.state.next);
-    let items = this.state.PokemonItems.concat(response.results);
-    this.setState({ PokemonItems: items });
-    this.setState({ next: response.next });
+    const response = await fetchPokemon(this.props.nextUrl);
+    console.log("response", response);
+    let next = response.next;
+    if (this.props.PokemonItems.response === undefined) {
+      this.props.setPokemonItem({ response });
+    } else {
+      let items = this.props.PokemonItems.response.results.concat(
+        response.results
+      );
+      this.props.setPokemonItem({ items });
+    }
+    this.props.setPokemonItem({ response });
+    this.props.setNextUrl({ next });
   }
   render() {
     return (
       <div>
         <div className="menu">
-          {this.state.PokemonItems.length !== 0 ? (
+          {this.props.PokemonItems.length !== 0 ? (
             <InfiniteScroll
-              dataLength={this.state.PokemonItems.length}
+              dataLength={this.props.PokemonItems.response.results.length}
               next={this.fetchData}
               hasMore={true}
               loader={<h4>Loading...</h4>}
             >
               <Row gutter={16}>
-                {this.state.PokemonItems.map((PokemonItem, i) => (
-                  <Col xs={8} span={4}>
-                    <div
-                      style={{
-                        background: "#F3F3F3",
-                        padding: "8px 0",
-                      }}
-                    >
-                      <Item
-                        key={PokemonItem.name}
-                        title={PokemonItem.name}
-                        url={PokemonItem.url}
-                        size="1"
-                      />
-                    </div>
-                  </Col>
-                ))}
+                {this.props.PokemonItems.response.results.map(
+                  (PokemonItem, i) => (
+                    <Col xs={8} span={4}>
+                      <div
+                        style={{
+                          background: "#F3F3F3",
+                          padding: "8px 0",
+                        }}
+                      >
+                        <Item
+                          key={PokemonItem.name}
+                          title={PokemonItem.name}
+                          url={PokemonItem.url}
+                          size="1"
+                        />
+                      </div>
+                    </Col>
+                  )
+                )}
               </Row>
             </InfiniteScroll>
           ) : (
@@ -65,4 +69,14 @@ class Pokemon extends React.Component {
   }
 }
 
-export default Pokemon;
+const mapStateToProp = (state) => ({
+  PokemonItems: state.PokemonReducer.PokemonItems,
+  next: state.PokemonReducer.next,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  setPokemonItem: (PokemonItem) => dispatch(setPokemonItem(PokemonItem)),
+  setNextUrl: (nextUrl) => dispatch(setNextUrl(nextUrl)),
+});
+
+export default connect(mapStateToProp, mapDispatchToProps)(Pokemon);

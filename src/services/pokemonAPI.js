@@ -1,6 +1,6 @@
 import https from "./https";
 
-export function fetchPokemon(next = null) {
+export function fetchPokemon(next = "") {
   let url = "https://pokeapi.co/api/v2/item";
   if (next) {
     url = next;
