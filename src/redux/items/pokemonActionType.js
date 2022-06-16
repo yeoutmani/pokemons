@@ -1,0 +1,9 @@
+const PokemonActionTypes = {
+    FETCH_POKEMONS_START : 'FETCH_POKEMONS_START',
+    FETCH_POKEMONS_SUCCESS : 'FETCH_POKEMONS_SUCCESS',
+    FETCH_POKEMONS_ERREUR : 'FETCH_POKEMONS_ERREUR'
+
+
+};
+
+export default PokemonActionTypes;

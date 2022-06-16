@@ -1,14 +1,18 @@
-import { createStore, applyMiddleware } from "redux";
-import logger from "redux-logger";
-
 import rootReducer from "./root-reducer";
 import createSagaMiddleware from "redux-saga";
+import { fetchCollectionsPokemons } from "./items/request";
+import thunk from "redux-thunk";
+import { applyMiddleware, createStore } from "redux";
 
-const sagaMiddleware = createSagaMiddleware();
-const middlewares = [sagaMiddleware];
+import logger from 'redux-logger'
 
-const store = createStore(rootReducer, applyMiddleware(...middlewares));
+////const sagaMiddleware = createSagaMiddleware();
+//const middlewares = [thunk];
+var thunkMiddleware = [thunk];
 
-//sagaMiddleware.run();
+const store = createStore( rootReducer, applyMiddleware(thunk, logger));
+
+
+//sagaMiddleware.run(fetchCollectionsPokemons);
 
 export default store;
