@@ -4,9 +4,9 @@ import { Col, Row } from "antd";
 import "./Pokemon.css";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { connect } from "react-redux";
-import { fetchPokemonsStartAsync, setNextUrl } from "../../redux/items/action";
+import { fetchPokemonsStartAsync } from "../../redux/items/action";
 import { createStructuredSelector } from "reselect";
-import { selecIsPokemonFetching, selecPokemonItems, selecNextUrl } from "../../redux/items/selector";
+import { selecIsPokemonFetching, selecPokemonItems } from "../../redux/items/selector";
 
 
 class Pokemon extends React.Component {
@@ -14,26 +14,21 @@ class Pokemon extends React.Component {
     const { fetchPokemonsStartAsync} = this.props;
     fetchPokemonsStartAsync();
   }
-  fetchData(next){  
-    //setNextUrl(selecPokemonItems.next);
-    console.log("next",next)
-    fetchPokemonsStartAsync(next);
-  }
   render() {
-    const {isPokemonFetching, selecPokemonItems, selecNextUrl} = this.props;
-    console.log( selecPokemonItems)
+    const {isPokemonFetching, selecPokemonItems,fetchPokemonsStartAsync } = this.props;
+    //console.log( selecPokemonItems)
 
      return (
       <div><div className="menu">
           {!isPokemonFetching && selecPokemonItems? (
             <InfiniteScroll
-              dataLength={selecPokemonItems.results.length}
-              next={this.fetchData(selecPokemonItems.next)}
+              dataLength={selecPokemonItems.length}
+              next={fetchPokemonsStartAsync}
               hasMore={true}
               loader={<h4>Loading...</h4>}
             >
               <Row gutter={16}>
-                {selecPokemonItems.results.map(
+                {selecPokemonItems.map(
                   (PokemonItem, i) => (
                     <Col xs={8} span={4} key={i}>
                       <div
@@ -43,6 +38,7 @@ class Pokemon extends React.Component {
                         }}
                       >
                         <Item
+                          onclick="console.log('The link was clicked.');"
                       
                           title={PokemonItem.name}
                           url={PokemonItem.url}
@@ -65,13 +61,11 @@ class Pokemon extends React.Component {
 
 const mapStateToProp = () => createStructuredSelector ({
   isPokemonFetching : selecIsPokemonFetching,
-  selecPokemonItems : selecPokemonItems,
-  selecNextUrl : selecNextUrl
+  selecPokemonItems : selecPokemonItems
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchPokemonsStartAsync: (next,data) => dispatch(fetchPokemonsStartAsync(next,data)),
-  setNextUrl: () => dispatch(setNextUrl(selecPokemonItems.next))
+  fetchPokemonsStartAsync: () => dispatch(fetchPokemonsStartAsync()),
 });
 
 export default connect(mapStateToProp, mapDispatchToProps)(Pokemon);

@@ -1,5 +1,6 @@
 import PokemonActionTypes from "./pokemonActionType";
 import axios from 'axios';
+import store from "../store";
 
 export const fetchPokemonsStart = () => ({
   type: PokemonActionTypes.FETCH_POKEMONS_START,
@@ -20,14 +21,24 @@ export const setNextUrl = (nextUrl) => ({
 });
 
 
-  export function fetchPokemonsStartAsync(next,data) {
-    console.log('neeeeext', next)
-    console.log('data', data)
+  export function fetchPokemonsStartAsync() {
+   let state = store.getState().PokemonReducer;
+   let pokemonItems = state.PokemonItems;
+   let nextUrl = state.nextUrl;
+   let url = "https://pokeapi.co/api/v2/item/";
+
+   if (nextUrl.length !== 0)
+   url = nextUrl;
+
 
     return function(dispatch) {
-      return axios.get("https://pokeapi.co/api/v2/item/")
+      return axios.get(url)
         .then(({ data }) => {
-        dispatch(fetchPokemonsSuccess(data));
+        let results = data.results;
+         if (pokemonItems !== null)
+          results = pokemonItems.concat(results);
+        dispatch(fetchPokemonsSuccess(results));
+        dispatch(setNextUrl(data.next));
         //dispatch(setNextUrl(data.next));
       }).catch(error => dispatch(fetchPokemonsErreur(error)))
     };

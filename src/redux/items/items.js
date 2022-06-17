@@ -18,13 +18,13 @@ const itemReducer = (state = INITIAL_STATE, action) => {
         isFetching: false,
         PokemonItems : action.payload
       };
-      case "FETCH_POKEMONS_ERREUR":
+    case "FETCH_POKEMONS_ERREUR":
         return {
           ...state,
           isFetching: false,
           errorMessage : action.payload
         };
-        case "SET_NEXT_LIST":
+    case "SET_NEXT_LIST":
           return {
             ...state,
             nextUrl: action.payload,

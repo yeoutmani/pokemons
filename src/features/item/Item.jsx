@@ -1,23 +1,27 @@
-import React, { useState } from "react";
-import { Modal, Avatar, Image } from "antd";
-
+import React from "react";
+import { Modal } from "antd";
+import { connect } from "react-redux";
+import { createStructuredSelector } from "reselect";
+import modalRender from "../modalContent/modalContent";
+import { selecIsModalVisible } from "../../redux/content/selector";
+import { setModaleVisible, setContentVar } from "../../redux/content/action";
 import "./Item.scss";
 
-import modalRender from "../modalContent/modalContent";
-
-const Item = ({ title, url, size }) => {
-  const [isModalVisible, setIsModalVisible] = useState(false);
-
+const Item = ({ isModalVisible, setModaleVisible,setContentVar,title, url, size }) => {
   const showModal = () => {
-    setIsModalVisible(true);
+    setModaleVisible(true);
+    const modalContent = {
+      title : title,
+      url : url
+    }
+    setContentVar(modalContent);
   };
-
   const handleOk = () => {
-    setIsModalVisible(false);
+    setModaleVisible(false);
   };
 
   const handleCancel = () => {
-    setIsModalVisible(false);
+    setModaleVisible(false);
   };
   return (
     <>
@@ -40,4 +44,14 @@ const Item = ({ title, url, size }) => {
   );
 };
 
-export default Item;
+const mapStateToProp = () => createStructuredSelector ({
+  isModalVisible : selecIsModalVisible,
+});
+
+const mapDispatchToProps = (dispatch) => ({
+  setModaleVisible: isModalVisible => dispatch(setModaleVisible(isModalVisible)),
+  setContentVar: contentVar => dispatch(setContentVar(contentVar)),
+
+});
+
+export default connect(mapStateToProp, mapDispatchToProps)(Item);
