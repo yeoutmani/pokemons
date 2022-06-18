@@ -26,27 +26,25 @@ export const setContentVar = (contentVar) => ({
   payload : contentVar
 });
 
+export const setContentData = (contentData) => ({
+  type: ContentTypes.SET_CONTENT_DATA,
+  payload : contentData
+});
 
-  export function fetchContentStartAsync() {
+
+  export function fetchContentStartAsync(dispatch) {
    let state = store.getState().ContentReducer;
-   console.log('state', state)
-   /*let pokemonItems = state.PokemonItems;
-   let nextUrl = state.nextUrl;
-   let url = "https://pokeapi.co/api/v2/item/";
-
-   if (nextUrl.length !== 0)
-   url = nextUrl;
-
+   let url = state.contentVar.url;
 
     return function(dispatch) {
       return axios.get(url)
         .then(({ data }) => {
-        let results = data.results;
-         if (pokemonItems !== null)
-          results = pokemonItems.concat(results);
-        dispatch(fetchPokemonsSuccess(results));
+          dispatch(setContentData(data));
+          dispatch(fetchContentSuccess(data));
+
+      /*  dispatch(fetchPokemonsSuccess(results));
         dispatch(setNextUrl(data.next));
-        //dispatch(setNextUrl(data.next));
-      }).catch(error => dispatch(fetchPokemonsErreur(error)))
-    };*/
+        //dispatch(setNextUrl(data.next));*/
+      }).catch(error => dispatch(fetchContentErreur(error)))
+    };
   }

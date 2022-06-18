@@ -37,9 +37,8 @@ class Pokemon extends React.Component {
                           padding: "8px 0",
                         }}
                       >
-                        <Item
-                          onclick="console.log('The link was clicked.');"
-                      
+                        <Item 
+                        key={i}                     
                           title={PokemonItem.name}
                           url={PokemonItem.url}
                           size="1"

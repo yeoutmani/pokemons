@@ -1,44 +1,52 @@
 import React from "react";
-import { Layout, Avatar, Image } from "antd";
-
-import { connect } from "react-redux";
-import { createStructuredSelector } from "reselect";
-import { selecIsContentFetching } from "../../redux/content/selector";
-import { fetchContentStartAsync } from "../../redux/content/action";
+import { Layout, Avatar, Image, Divider } from "antd";
 
 import "./modalContent.scss";
+import store from '../../redux/store'
 
 
 const { Content } = Layout;
 
-const ModalRender = ({isContentFetching, fetchContentStartAsync}) => {
- /* fetchContentStartAsync();
-  console.*/
-  let url = "https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/items/thunder-stone.png"
+const ModalRender = () => {
+  let url ='',name ='', effect= '' ,sort_effect = '';
+
+  let contentData = store.getState().ContentReducer.contentData
+  if (contentData !== null){
+  name = contentData.name
+  url = contentData.sprites.default;
+  effect = contentData.effect_entries[0].effect
+  sort_effect = contentData.effect_entries[0].sort_effect
+
+}
   return (
     <Content>
-      {!url ? (
-    <div
-      style={{
-        backgroundColor: "#F7DC6F",
-        width: "1000px",
-        textAlign: "center",
-      }}
-    >
-      <Avatar
-        size={150}
-        src={
-          <Image
-            src={url}
-            style={{
-              marginLeft: "-8%",
-              width: 185,
-            }}
-          />
-        }
-      />
-      <h2 style={{ color: "black" }}>Name</h2>
-    </div>
+      {url ? (
+    <><div
+          style={{
+            backgroundColor: "#F7DC6F",
+            width: "1000px",
+            textAlign: "center",
+          }}
+        >
+          <Avatar
+            size={150}
+            src={<Image
+              src={url}
+              style={{
+                marginLeft: "-8%",
+                width: 185,
+              }} />} />
+          <h2 style={{ color: "black" }}>{name}</h2>
+          <p>
+              {effect}
+            </p>
+            <Divider />
+            <p>
+            {sort_effect}
+
+            </p>
+        </div>
+            </>
      ) : (
       ""
     )}
@@ -47,13 +55,4 @@ const ModalRender = ({isContentFetching, fetchContentStartAsync}) => {
   );
 };
 
-const mapStateToProp = () => createStructuredSelector ({
-  isContentFetching : selecIsContentFetching
-});
-
-const mapDispatchToProps = (dispatch) => ({
-  fetchContentStartAsync: () => dispatch(fetchContentStartAsync()),
-
-});
-
-export default connect(mapStateToProp, mapDispatchToProps)(ModalRender);
+export default ModalRender;

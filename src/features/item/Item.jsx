@@ -4,10 +4,10 @@ import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 import modalRender from "../modalContent/modalContent";
 import { selecIsModalVisible } from "../../redux/content/selector";
-import { setModaleVisible, setContentVar } from "../../redux/content/action";
+import { setModaleVisible, setContentVar, fetchContentStartAsync } from "../../redux/content/action";
 import "./Item.scss";
 
-const Item = ({ isModalVisible, setModaleVisible,setContentVar,title, url, size }) => {
+const Item = ({ isModalVisible, setModaleVisible,setContentVar,title, url, size, fetchContentStartAsync }) => {
   const showModal = () => {
     setModaleVisible(true);
     const modalContent = {
@@ -15,6 +15,7 @@ const Item = ({ isModalVisible, setModaleVisible,setContentVar,title, url, size 
       url : url
     }
     setContentVar(modalContent);
+    fetchContentStartAsync();
   };
   const handleOk = () => {
     setModaleVisible(false);
@@ -51,6 +52,7 @@ const mapStateToProp = () => createStructuredSelector ({
 const mapDispatchToProps = (dispatch) => ({
   setModaleVisible: isModalVisible => dispatch(setModaleVisible(isModalVisible)),
   setContentVar: contentVar => dispatch(setContentVar(contentVar)),
+  fetchContentStartAsync: () => dispatch(fetchContentStartAsync()),
 
 });
 

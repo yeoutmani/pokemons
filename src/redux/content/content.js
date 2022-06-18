@@ -35,6 +35,11 @@ const INITIAL_STATE = {
                     ...state,
                     contentVar: action.payload,
                   };
+                  case "SET_CONTENT_DATA":
+                    return {
+                        ...state,
+                        contentData: action.payload,
+                      };
       default:
         return state;
     }
