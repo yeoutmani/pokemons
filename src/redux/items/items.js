@@ -1,7 +1,7 @@
 const INITIAL_STATE = {
-  PokemonItems: null,
+  PokemonItems: [],
   isFetching: false,
-  nextUrl:"",
+  nextUrl:null,
   errorMessage : undefined
 };
 

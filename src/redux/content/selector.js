@@ -12,3 +12,8 @@ export const selecIsModalVisible = createSelector(
     [selectContent],
     (Content) => Content.isModalVisible
 )
+
+export const selecContentVar = createSelector(
+    [selectContent],
+    (Content) => Content.contentVar
+)

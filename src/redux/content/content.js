@@ -1,6 +1,6 @@
 const INITIAL_STATE = {
     contentData : null,
-    contentVar : null,
+    contentVar : {title :''},
     isModalVisible : false,
     isFetching:false,
     errorMessage : undefined,

@@ -4,26 +4,21 @@ import { Col, Row } from "antd";
 import "./Pokemon.css";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { connect } from "react-redux";
-import { fetchPokemonsStartAsync } from "../../redux/items/action";
+import { fetchPokemonsStart } from "../../redux/items/request";
 import { createStructuredSelector } from "reselect";
 import { selecIsPokemonFetching, selecPokemonItems } from "../../redux/items/selector";
 
 
 class Pokemon extends React.Component {
-  componentDidMount() {
-    const { fetchPokemonsStartAsync} = this.props;
-    fetchPokemonsStartAsync();
-  }
   render() {
-    const {isPokemonFetching, selecPokemonItems,fetchPokemonsStartAsync } = this.props;
-    //console.log( selecPokemonItems)
-
+    const {isPokemonFetching, selecPokemonItems,fetchPokemonsStart } = this.props;
+    console.log('selecPokemonItems[0].name',selecPokemonItems[0])
      return (
       <div><div className="menu">
-          {!isPokemonFetching && selecPokemonItems? (
+          {!isPokemonFetching ? (
             <InfiniteScroll
               dataLength={selecPokemonItems.length}
-              next={fetchPokemonsStartAsync}
+              next={fetchPokemonsStart}
               hasMore={true}
               loader={<h4>Loading...</h4>}
             >
@@ -64,7 +59,7 @@ const mapStateToProp = () => createStructuredSelector ({
 });
 
 const mapDispatchToProps = (dispatch) => ({
-  fetchPokemonsStartAsync: () => dispatch(fetchPokemonsStartAsync()),
+ fetchPokemonsStart: () => dispatch(fetchPokemonsStart()),
 });
 
 export default connect(mapStateToProp, mapDispatchToProps)(Pokemon);

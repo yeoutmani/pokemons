@@ -2,12 +2,16 @@ import React from "react";
 import { Modal } from "antd";
 import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
-import modalRender from "../modalContent/modalContent";
-import { selecIsModalVisible } from "../../redux/content/selector";
-import { setModaleVisible, setContentVar, fetchContentStartAsync } from "../../redux/content/action";
+import ModalRender from "../modalContent/modalContent";
+import { selecIsModalVisible, selecContentVar } from "../../redux/content/selector";
+import { setModaleVisible, setContentVar } from "../../redux/content/action";
+import { fetchContentStart } from "../../redux/content/request";
+
 import "./Item.scss";
 
-const Item = ({ isModalVisible, setModaleVisible,setContentVar,title, url, size, fetchContentStartAsync }) => {
+const Item = ({ isModalVisible, setModaleVisible,setContentVar,title, url, size, fetchContentStart, selecContentVar }) => {
+ 
+
   const showModal = () => {
     setModaleVisible(true);
     const modalContent = {
@@ -15,7 +19,7 @@ const Item = ({ isModalVisible, setModaleVisible,setContentVar,title, url, size,
       url : url
     }
     setContentVar(modalContent);
-    fetchContentStartAsync();
+    fetchContentStart();
   };
   const handleOk = () => {
     setModaleVisible(false);
@@ -24,6 +28,11 @@ const Item = ({ isModalVisible, setModaleVisible,setContentVar,title, url, size,
   const handleCancel = () => {
     setModaleVisible(false);
   };
+  const  getTable= () =>  {
+    return (
+      <ModalRender />
+    );
+}
   return (
     <>
       <div className={`${size} item`} onClick={showModal}>
@@ -31,6 +40,7 @@ const Item = ({ isModalVisible, setModaleVisible,setContentVar,title, url, size,
           <h1 className="title">{title.toUpperCase()}</h1>
         </div>
       </div>
+      {selecContentVar.title === title ? (
       <Modal
         title="Basic Modal"
         visible={isModalVisible}
@@ -38,21 +48,25 @@ const Item = ({ isModalVisible, setModaleVisible,setContentVar,title, url, size,
         onOk={handleOk}
         onCancel={handleCancel}
         content="content"
-        modalRender={modalRender}
+        modalRender={getTable}
         width={1000}
       />
+
+      ) : ("")}
+      
     </>
   );
 };
 
 const mapStateToProp = () => createStructuredSelector ({
   isModalVisible : selecIsModalVisible,
+  selecContentVar : selecContentVar,
 });
 
 const mapDispatchToProps = (dispatch) => ({
   setModaleVisible: isModalVisible => dispatch(setModaleVisible(isModalVisible)),
   setContentVar: contentVar => dispatch(setContentVar(contentVar)),
-  fetchContentStartAsync: () => dispatch(fetchContentStartAsync()),
+  fetchContentStart: () => dispatch(fetchContentStart()),
 
 });
 

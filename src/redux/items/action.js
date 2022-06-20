@@ -20,7 +20,7 @@ export const setNextUrl = (nextUrl) => ({
   payload : nextUrl
 });
 
-
+/*
   export function fetchPokemonsStartAsync() {
    let state = store.getState().PokemonReducer;
    let pokemonItems = state.PokemonItems;
@@ -42,4 +42,4 @@ export const setNextUrl = (nextUrl) => ({
         //dispatch(setNextUrl(data.next));
       }).catch(error => dispatch(fetchPokemonsErreur(error)))
     };
-  }
+  }*/

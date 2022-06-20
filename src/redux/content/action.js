@@ -31,7 +31,7 @@ export const setContentData = (contentData) => ({
   payload : contentData
 });
 
-
+/*
   export function fetchContentStartAsync(dispatch) {
    let state = store.getState().ContentReducer;
    let url = state.contentVar.url;
@@ -45,6 +45,6 @@ export const setContentData = (contentData) => ({
       /*  dispatch(fetchPokemonsSuccess(results));
         dispatch(setNextUrl(data.next));
         //dispatch(setNextUrl(data.next));*/
-      }).catch(error => dispatch(fetchContentErreur(error)))
+ /*     }).catch(error => dispatch(fetchContentErreur(error)))
     };
-  }
+  }*/
