@@ -1,6 +1,5 @@
 import PokemonActionTypes from "./pokemonActionType";
-import axios from 'axios';
-import store from "../store";
+
 
 export const fetchPokemonsStart = () => ({
   type: PokemonActionTypes.FETCH_POKEMONS_START,

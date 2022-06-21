@@ -1,24 +1,42 @@
-import { call, put, takeEvery, takeLatest } from 'redux-saga/effects'
+import { call, put, takeEvery, all } from 'redux-saga/effects'
 import axios from 'axios'
 
 //import { setPokemonItem } from "./action";
 import PokemonActionTypes from "./pokemonActionType";
-//import { selecPokemonItems } from "./selector";
+import {select} from 'redux-saga/effects';
+import * as selectors from './selector';
+import * as contentSelectors from '../content/selector';
 
 
 export function*  fetchPokemonsStartAsync() {
+
     try {
+      console.log('fetchPokemonsStartAsync');
+
+      const selecPokemonItems = yield select(selectors.selecPokemonItems);
+      const selecContentData = yield select(contentSelectors.selecContentData);
+
+      console.log('selecPokemonItems', selecPokemonItems)
+      console.log('selecContentData', selecContentData)
+
+      yield put({ type : PokemonActionTypes.FETCH_POKEMONS_START, payload : true })
       const { data } = yield call(axios.get, 'https://pokeapi.co/api/v2/item/')
-      console.log("data", data)
-      yield put({ type : PokemonActionTypes.FETCH_POKEMONS_SUCCESS, payload : data })
+      console.log('data', data)
+      yield put({ type : PokemonActionTypes.FETCH_POKEMONS_SUCCESS, payload : data.results })
     } catch (e) {
-      console.log(e.message)
+      console.log('erooor', e);
+
+      yield put({ type : PokemonActionTypes.FETCH_POKEMONS_ERREUR, payload : e })
     }
 }
 
 export function* fetchPokemonsStart(){
     yield takeEvery(PokemonActionTypes.FETCH_POKEMONS_START,
         fetchPokemonsStartAsync);
+}
+
+export function* pokemonSaga() {
+yield all([call(fetchPokemonsStart)])
 }
 
 /*export function fetchPokemonsStartAsync() {

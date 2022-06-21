@@ -4,21 +4,23 @@ import { Col, Row } from "antd";
 import "./Pokemon.css";
 import InfiniteScroll from "react-infinite-scroll-component";
 import { connect } from "react-redux";
-import { fetchPokemonsStart } from "../../redux/items/request";
 import { createStructuredSelector } from "reselect";
 import { selecIsPokemonFetching, selecPokemonItems } from "../../redux/items/selector";
-
+import { fetchPokemonsStart } from "../../redux/items/action";
 
 class Pokemon extends React.Component {
+ /* componentDidMount(){
+    const {fetchPokemon } = this.props;
+    fetchPokemon();
+  }*/
   render() {
-    const {isPokemonFetching, selecPokemonItems,fetchPokemonsStart } = this.props;
-    console.log('selecPokemonItems[0].name',selecPokemonItems[0])
+    const {isPokemonFetching, selecPokemonItems, fetchNext, fetchPokemon } = this.props;
      return (
       <div><div className="menu">
           {!isPokemonFetching ? (
             <InfiniteScroll
               dataLength={selecPokemonItems.length}
-              next={fetchPokemonsStart}
+             // next={fetchPokemon}
               hasMore={true}
               loader={<h4>Loading...</h4>}
             >
@@ -45,8 +47,7 @@ class Pokemon extends React.Component {
               </Row>
             </InfiniteScroll>
           ) : (
-            ""
-          )}
+          "")}
         </div>
       </div>
     );
@@ -57,9 +58,8 @@ const mapStateToProp = () => createStructuredSelector ({
   isPokemonFetching : selecIsPokemonFetching,
   selecPokemonItems : selecPokemonItems
 });
-
-const mapDispatchToProps = (dispatch) => ({
- fetchPokemonsStart: () => dispatch(fetchPokemonsStart()),
-});
-
+const mapDispatchToProps = dispatch  => ({
+  //fetchPokemon :() => dispatch(fetchPokemonsStart())
+})
 export default connect(mapStateToProp, mapDispatchToProps)(Pokemon);
+
