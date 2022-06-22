@@ -4,8 +4,11 @@ import { connect } from "react-redux";
 import { createStructuredSelector } from "reselect";
 import ModalRender from "../modalContent/modalContent";
 import { selecIsModalVisible, selecContentVar } from "../../redux/content/selector";
-import { setModaleVisible, setContentVar } from "../../redux/content/action";
-import { fetchContentStart } from "../../redux/content/request";
+import {
+  setModaleVisible,
+  setContentVar,
+  fetchContentStart,
+} from "../../redux/content/action";
 
 import "./Item.scss";
 

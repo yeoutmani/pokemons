@@ -1,10 +1,8 @@
 import rootReducer from "./root-reducer";
 import createSagaMiddleware from "redux-saga";
-import { fetchPokemonsStartAsync } from "./items/request";
-import logger from 'redux-logger'
+import logger from "redux-logger";
 
 import { applyMiddleware, createStore } from "redux";
-import { fetchContentStartAsync } from "./content/request";
 import ReduxThunk from 'redux-thunk';
 import rootSaga from "./root-saga";
 
@@ -15,7 +13,5 @@ const middlewaresSaga = [sagaMiddleware];
 const store = createStore( rootReducer,applyMiddleware(...middlewaresSaga,...middlewares, logger));
 
 sagaMiddleware.run(rootSaga);
-sagaMiddleware.run(fetchPokemonsStartAsync);
-sagaMiddleware.run(fetchContentStartAsync);
 
 export default store;

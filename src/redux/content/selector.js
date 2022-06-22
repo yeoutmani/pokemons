@@ -1,19 +1,22 @@
 import { createSelector } from "reselect";
 const selectContent = state => state.ContentReducer;
+
 export const selecIsContentFetching = createSelector(
-    [selectContent],
-    (Content) => Content.isFetching
-)
+  [selectContent],
+  (Content) => Content.isFetching
+);
+
 export const selecContentData = createSelector(
-    [selectContent],
-    (Content) => Content.contentData
-)
+  [selectContent],
+  (Content) => Content.contentData
+);
+
 export const selecIsModalVisible = createSelector(
-    [selectContent],
-    (Content) => Content.isModalVisible
-)
+  [selectContent],
+  (Content) => Content.isModalVisible
+);
 
 export const selecContentVar = createSelector(
-    [selectContent],
-    (Content) => Content.contentVar
-)
+  [selectContent],
+  (Content) => Content.contentVar
+);

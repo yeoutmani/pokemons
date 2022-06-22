@@ -4,8 +4,8 @@ import PokemonActionTypes from "./pokemonActionType";
 const INITIAL_STATE = {
   PokemonItems: [],
   isFetching: false,
-  nextUrl:null,
-  errorMessage : undefined
+  nextUrl: "https://pokeapi.co/api/v2/item/",
+  errorMessage: undefined,
 };
 
 const itemReducer = (state = INITIAL_STATE, action) => {
@@ -19,19 +19,28 @@ const itemReducer = (state = INITIAL_STATE, action) => {
       return {
         ...state,
         isFetching: false,
-        PokemonItems : action.payload
+        PokemonItems: action.payload.results,
+        nextUrl: action.payload.next,
       };
     case PokemonActionTypes.FETCH_POKEMONS_ERREUR:
-        return {
-          ...state,
-          isFetching: false,
-          errorMessage : action.payload
-        };
-    case PokemonActionTypes.SET_NEXT_LIST:
-          return {
-            ...state,
-            nextUrl: action.payload,
-          };
+      return {
+        ...state,
+        isFetching: false,
+        errorMessage: action.payload,
+      };
+    case PokemonActionTypes.FETCH_LOAD_MORE_POKEMONS_SUCCESS:
+      const loadingData = action.payload.results;
+      const { PokemonItems } = state;
+      return {
+        ...state,
+        PokemonItems: [...PokemonItems, ...loadingData],
+        nextUrl: action.payload.next,
+      };
+    case PokemonActionTypes.FETCH_LOAD_MORE_POKEMONS_ERREUR:
+      return {
+        ...state,
+        errorMessage: action.payload,
+      };
     default:
       return state;
   }

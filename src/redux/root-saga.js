@@ -1,7 +1,6 @@
 import { all, call } from "redux-saga/effects";
-import { fetchContentStart } from "./content/action";
-import { fetchPokemonsStart } from "./items/request";
-
+import { contentSaga } from "./content/request";
+import { pokemonSaga } from "./items/request";
 export default function* rootSaga() {
-    yield all([ call(fetchPokemonsStart),call(fetchContentStart) ])
+  yield all([call(pokemonSaga), call(contentSaga)]);
 }
